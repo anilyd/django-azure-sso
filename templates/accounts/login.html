@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div style="max-width: 420px; margin: 60px auto;">
+    <div class="card" style="text-align: center;">
+        <h2 style="margin-bottom: 10px;">Welcome</h2>
+        <p style="color: #666; margin-bottom: 30px;">Sign in with your Microsoft / Azure AD account</p>
+        {% if error %}
+            <p style="color: red; margin-bottom: 16px;">⚠️ {{ error }}</p>
+        {% endif %}
+        <a href="{% url 'azure_login' %}" class="btn btn-primary" style="width: 100%; display: block; padding: 14px; font-size: 16px;">
+            🔷 Sign in with Microsoft
+        </a>
+    </div>
+</div>
+{% endblock %}
