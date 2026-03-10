@@ -41,3 +41,42 @@ Django app with Azure AD SSO login using custom User model.
    │  Microsoft      │  │   DB   │  │  Graph API      │
    │  Login Server   │  └────────┘  │  /v1.0/me       │
    └─────────────────┘              └─────────────────┘
+
+
+
+## Flow (Authentication Workflow)
+
+User                Django              Azure AD           Graph API
+ │                    │                    │                   │
+ │─── GET /login/ ───▶│                    │                   │
+ │◀── Login Page ─────│                    │                   │
+ │                    │                    │                   │
+ │─── Click "Sign     │                    │                   │
+ │    in with MS" ───▶│                    │                   │
+ │                    │──── Build Auth ────│                   │
+ │                    │     URL (MSAL)     │                   │
+ │◀── Redirect to ────│                    │                   │
+ │    Microsoft ──────────────────────────▶│                   │
+ │                    │                    │                   │
+ │─── Enter Creds ───────────────────────▶│                   │
+ │◀── Auth Code ──────────────────────────│                   │
+ │    in Redirect ────────────────────────│                   │
+ │                    │                   │                   │
+ │─── GET /callback/ ▶│                   │                   │
+ │    ?code=XXXX      │                   │                   │
+ │                    │── Exchange Code ──▶│                   │
+ │                    │◀─ Access Token ───│                   │
+ │                    │                   │                   │
+ │                    │── GET /v1.0/me ───────────────────────▶│
+ │                    │◀─ User Profile ────────────────────────│
+ │                    │  (email, name,    │                   │
+ │                    │   azure_oid)      │                   │
+ │                    │                   │                   │
+ │                    │── Get or Create ──▶                   │
+ │                    │   CustomUser DB   │                   │
+ │                    │                   │                   │
+ │◀── Redirect to ────│                   │                   │
+ │    /home/ ─────────│                   │                   │
+ │                    │                   │                   │
+
+
