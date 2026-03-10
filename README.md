@@ -14,3 +14,30 @@ Django app with Azure AD SSO login using custom User model.
 3. Copy .env.example to .env and fill values
 4. python manage.py migrate
 5. python manage.py runserver
+
+
+## 🏗️ System Design
+
+┌─────────────────────────────────────────────────────────┐
+│                     CLIENT BROWSER                       │
+└──────────────────────┬──────────────────────────────────┘
+                       │ HTTP Request
+                       ▼
+┌─────────────────────────────────────────────────────────┐
+│                   DJANGO APPLICATION                     │
+│                                                         │
+│  ┌─────────────┐    ┌─────────────┐   ┌─────────────┐  │
+│  │  accounts/  │    │  accounts/  │   │  accounts/  │  │
+│  │  urls.py    │───▶│  views.py   │──▶│  models.py  │  │
+│  └─────────────┘    └──────┬──────┘   └─────────────┘  │
+│                            │                CustomUser   │
+│                            │ MSAL Library               │
+└────────────────────────────┼────────────────────────────┘
+                             │
+              ┌──────────────┼──────────────┐
+              ▼              ▼              ▼
+   ┌─────────────────┐  ┌────────┐  ┌─────────────────┐
+   │  Azure AD /     │  │ SQLite │  │  Microsoft      │
+   │  Microsoft      │  │   DB   │  │  Graph API      │
+   │  Login Server   │  └────────┘  │  /v1.0/me       │
+   └─────────────────┘              └─────────────────┘
