@@ -15,6 +15,8 @@ Django app with Azure AD SSO login using custom User model.
 4. python manage.py migrate
 5. python manage.py runserver
 
+## Note System will show properly client on edit button and below diagram
+
 
 ## 🏗️ System Design
 
